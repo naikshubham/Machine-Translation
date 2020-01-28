@@ -84,6 +84,12 @@ reversed_words = onehot2words(onehot_rev, index2word)
 print(reversed_words)
 ```
 
+### Sequential models
+#### Time series inputs and sequential models
+- A sentence is an time series input which means every word in the sentence is affected by previous words. The encoder and decoder use a ML model that can learn from time-series or sequential inputs like sentences. The ML model is called a sequential model.
+
+#### Sequential models
+- Sequential models go from one input to the other while producing an output at each time step.During time step 1,the first word is processed and during time step 2, the second word is processed.The same model processes each input.
 
   
 
