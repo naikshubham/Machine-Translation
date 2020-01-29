@@ -91,7 +91,82 @@ print(reversed_words)
 #### Sequential models
 - Sequential models go from one input to the other while producing an output at each time step.During time step 1,the first word is processed and during time step 2, the second word is processed.The same model processes each input.
 
-  
+#### Encoder as a sequential model
+- Type of sequential model called gated recurrent unit(GRU), is used as translator. For e.g, the inputs to the encoder is a sequence of English words encoded as one-hot vectors.
+
+#### Keras(Functional API)
+- Keras has two important objects: Layers and Models.
+- Input Layer : `inp = keras.layers.Input(shape=(...))`
+- Hidden layer: `layer = keras.layers.GRU(...)`
+- Output      : `out = layer(inp)`
+- Model       : `model = Model(inputs=inp, outputs=out)`
+
+#### Understanding the shape of the data
+- Before getting to implementing GRUs, we must understand that sequential data has three dimensions. The sequences are usually processed in groups or batches.
+- Sequential data is 3-dimensional
+1) Batch dimension (e.g batch=groups of sentences)
+2) Time dimension(sequence length) : describes the length of the sequences or sentences
+3) Input dimension: length of one-hot vectors
+- The input layer of the GRU model needs to have this 3 dimensional shape.
+
+#### Implementing GRUs with keras
+
+```python
+inp = keras.layers.Input(batch_shape=(2,3,4)) #batchsize=2, sequence length=3, input dimen=4
+gru_out = keras.layers.GRU(10)(inp)  #GRU layer with 10 hidden units
+model = keras.models.Model(inputs=inp, outputs=gru_out)
+
+x = np.random.normal(size=(2,3,4))
+y = model.predict(x)
+print("shape (y) = ", y.shape, "\ny = \n", y)
+```
+
+- we can also define the input layer by setting the batch size to None, to do that use the shape argument instead of batch_shape and only set the sequence length and input dimensionality
+- In keras, doing this means that the input layer will accept any arbitary sized batch of data.This allows to define the keras model once and experiment with different bacth sizes without changing the model.
+- GRU layer has two more important arguments return_state and return sequences.If we set the `return_state` argument to True, the model will return two outputs instead of one, one is the last hidden state and the other is the last output.
+- If we set `return_sequences` to True the model will output all the outputs in the sequence of the last output.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   
