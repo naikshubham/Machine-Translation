@@ -126,6 +126,66 @@ print("shape (y) = ", y.shape, "\ny = \n", y)
 - GRU layer has two more important arguments return_state and return sequences.If we set the `return_state` argument to True, the model will return two outputs instead of one, one is the last hidden state and the other is the last output.
 - If we set `return_sequences` to True the model will output all the outputs in the sequence of the last output.
 
+### Implementing the encoder
+#### Understanding the data
+- Dataset consists of english and french sentences list
+
+```python
+for en_sent, fr_sent in zip(en_text[:3], fr_text[:3]):
+  print('english:', english)
+  print('french:', french)
+```
+- Check attributes of the dataset such as, the average number of words, or average length of sentences, and the size of the vocabulary.These parameters are required to define the input layer of the encoder.
+- Tokenazation can be done by splitting the sentences by space.
+
+#### Computing the length of the sentences
+
+```python
+sent_lengths = [len(en_sent.split(" ")) for en_sent in en_text]
+mean_length = np.mean(sent_lengths)
+```
+#### Computing the size of the vocabulary
+
+```python
+all_words = []
+for sent in en_text:
+  all_words.extend(sent.split(" "))
+vocab_size = len(set(all_words))
+```
+
+#### The Encoder
+- Encoder is made up of GRU model.The GRU model goes from one input to the other sequentially while producing an output(and a state) at each time step.
+- The state vector produced at time equals t becomes an input state to the model at time equals t plus 1.
+- Encoder implementation is very similar to implementation of GRU layer
+- Knowing the **average number of words** helps us to define **`en_len`**. The **size of the vocabulary** helps us to define **`en_vocab`**. These are essential to define the input layer
+
+```python
+# Input layer
+en_inputs = Input(shape=(en_len, en_vocab))
+```
+
+- We picks these values close to what we discovered while analyzing the dataset
+- Next, define a GRU layer which returns the last state.The last state of the GRU layer will be later passed to the decoder as inputs.
+
+```python
+# GRU layer
+en_gru = GRU(hsize, return_state=True)
+en_out, en_state = en_gru(en_inputs)
+```
+- Next define a keras model whose input is input layer and output is the state obtained from the GRU layer
+
+```python
+# Keras model
+encoder = Model(inputs=en_inputs, outputs=en_state)
+```
+
+
+
+
+
+
+
+
 
 
 
