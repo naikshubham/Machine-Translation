@@ -178,6 +178,8 @@ en_out, en_state = en_gru(en_inputs)
 # Keras model
 encoder = Model(inputs=en_inputs, outputs=en_state)
 ```
+### Decoder
+- We have implemented a encoder which consumes the source i.e english words one by one and finally produces the context vector.Now we need to implement the decoder that consumes the context vector and produces the target language words i.e french words one by one. The decoder will be implemented similar to the encoder using a Keras GRU layer. But GRU layer requires two inputs 1) A time series input & 2) Hidden state.
 
 
 
